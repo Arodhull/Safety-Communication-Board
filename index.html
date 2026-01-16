@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amazon Safety Communication Kiosk RSW5 & LAL4</title>
+  <title>Amazon Safety Communication Board</title>
   <style>
     :root {
       --amazon-green: #008a05;
@@ -157,7 +157,7 @@
       font-size: 14px;
       opacity: 0.7;
     }
-  </style>
+    .subtabs{display:flex;gap:15px;margin-bottom:20px;} .subtabs button{background:var(--amazon-green);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:18px;cursor:pointer;} .subtabs button:hover{background:#006b03;} </style>
 </head>
 <body>
 
@@ -197,7 +197,6 @@
     </div>
 
     <div class="tile" onclick="openModal('chemical')">
-      <span></span>
       <h2>Chemical Safety Information</h2>
     </div>
 
@@ -208,6 +207,7 @@
   </div>
 
   <!-- MODAL -->
+
   <div class="modal" id="modal">
     <div class="modal-content" id="modalContent">
       <button class="close-btn" onclick="closeModal()">✕ Close</button>
@@ -219,6 +219,27 @@
 
   <script>
     const content = {
+      leadership: `
+        <h2>Leadership Commitment</h2>
+        <div class="subtabs">
+          <button onclick="showSubTab('leader1')">Site Leader</button>
+          <button onclick="showSubTab('leader2')">Safety Vision</button>
+        </div>
+        <div id="subtab-content">
+          <img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">
+        </div>
+      `,
+      evacuation: `
+        <h2>Emergency Evacuation Map</h2>
+        <div class="subtabs">
+          <button onclick="showSubTab('map1')">Main Floor</button>
+          <button onclick="showSubTab('map2')">Mezzanine</button>
+        </div>
+        <div id="subtab-content">
+          <img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">
+        </div>
+      `,
+      bestpractices: `
       leadership: `
         <h2>Leadership Commitment</h2>
         <div class="content-grid">
@@ -285,6 +306,17 @@
         </div>
       `
     };
+
+    function showSubTab(tab){
+      const container = document.getElementById('subtab-content');
+      const map = {
+        leader1: '<img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">',
+        leader2: '<img src="assets/leadership2.jpg" style="width:100%;border-radius:15px;">',
+        map1: '<img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">',
+        map2: '<img src="assets/evacuation-map2.jpg" style="width:100%;border-radius:15px;">'
+      };
+      container.innerHTML = map[tab];
+    }
 
     function openModal(section) {
       document.getElementById('modalBody').innerHTML = content[section];
