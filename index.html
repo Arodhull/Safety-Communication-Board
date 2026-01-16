@@ -217,7 +217,11 @@
 
   <div class="fullscreen-hint">Tip: Press F11 for Fullscreen Kiosk Mode</div>
 
-  <script>
+ <script>
+  function openModal(section) {
+    const modal = document.getElementById("modal");
+    const body = document.getElementById("modalBody");
+
     const content = {
       leadership: `
         <h2>Leadership Commitment</h2>
@@ -239,99 +243,41 @@
           <img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">
         </div>
       `,
-      bestpractices: `
-      leadership: `
-        <h2>Leadership Commitment</h2>
-        <div class="content-grid">
-          <div class="content-card">
-            <img src="assets/leadership1.jpg" alt="Leader">
-            <p>Site Leadership Commitment Statement</p>
-          </div>
-          <div class="content-card">
-            <img src="assets/leadership2.jpg" alt="Leader">
-            <p>Safety Policy & Vision</p>
-          </div>
-        </div>
-      `,
-      evacuation: `
-        <h2>Emergency Evacuation Map</h2>
-        <div class="content-card">
-          <img src="assets/evacuation-map.jpg" alt="Evacuation Map">
-          <p>Follow highlighted routes during emergencies.</p>
-        </div>
-      `,
-      bestpractices: `
-        <h2>Best Practices / PMV</h2>
-        <div class="content-grid">
-          <div class="content-card"><p>Proper Lifting Techniques</p></div>
-          <div class="content-card"><p>Heat Stress Prevention</p></div>
-          <div class="content-card"><p>Ergonomic Best Practices</p></div>
-        </div>
-      `,
-      education: `
-        <h2>Safety Awareness / Education</h2>
-        <div class="content-grid">
-          <div class="content-card"><p>Weekly Safety Topics</p></div>
-          <div class="content-card"><p>Training Videos</p></div>
-          <div class="content-card"><p>Safety Campaigns</p></div>
-        </div>
-      `,
-      committee: `
-        <h2>Associate Safety Committee</h2>
-        <div class="content-grid">
-          <div class="content-card">
-            <img src="assets/associate1.jpg" alt="Associate">
-            <p>Committee Member</p>
-          </div>
-          <div class="content-card">
-            <img src="assets/associate2.jpg" alt="Associate">
-            <p>Committee Member</p>
-          </div>
-        </div>
-      `,
-      fiveStar: `
-        <h2>5 Star Stance</h2>
-        <div class="content-grid">
-          <div class="content-card"><p>Proper Posture</p></div>
-          <div class="content-card"><p>Safe Lifting Stance</p></div>
-          <div class="content-card"><p>Awareness & Positioning</p></div>
-        </div>
-      `,
-      other: `
-        <h2>Other Information</h2>
-        <div class="content-grid">
-          <div class="content-card"><p>Zone Owners</p></div>
-          <div class="content-card"><p>Emergency Contacts</p></div>
-          <div class="content-card"><p>OSHA Information</p></div>
-        </div>
-      `
+      bestpractices: `<h2>Best Practices</h2><p>Content coming soon</p>`,
+      education: `<h2>Safety Education</h2><p>Content coming soon</p>`,
+      committee: `<h2>Associate Safety Committee</h2><p>Content coming soon</p>`,
+      fiveStar: `<h2>5 Star Stance</h2><p>Content coming soon</p>`,
+      other: `<h2>Other Information</h2><p>Content coming soon</p>`
     };
 
-    function showSubTab(tab){
-      const container = document.getElementById('subtab-content');
-      const map = {
-        leader1: '<img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">',
-        leader2: '<img src="assets/leadership2.jpg" style="width:100%;border-radius:15px;">',
-        map1: '<img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">',
-        map2: '<img src="assets/evacuation-map2.jpg" style="width:100%;border-radius:15px;">'
-      };
-      container.innerHTML = map[tab];
-    }
+    body.innerHTML = content[section];
+    modal.style.display = "flex";
+  }
 
-    function openModal(section) {
-      document.getElementById('modalBody').innerHTML = content[section];
-      document.getElementById('modal').style.display = 'flex';
-    }
+  function closeModal() {
+    document.getElementById("modal").style.display = "none";
+  }
 
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+  function showSubTab(tab) {
+    const container = document.getElementById("subtab-content");
 
-    // Close modal if clicking outside content
-    document.getElementById('modal').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
-  </script>
+    const map = {
+      leader1: '<img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">',
+      leader2: '<img src="assets/leadership2.jpg" style="width:100%;border-radius:15px;">',
+      map1: '<img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">',
+      map2: '<img src="assets/evacuation-map2.jpg" style="width:100%;border-radius:15px;">'
+    };
+
+    container.innerHTML = map[tab];
+  }
+
+  // Close when clicking outside modal
+  document.addEventListener("click", function(e) {
+    const modal = document.getElementById("modal");
+    if (e.target === modal) closeModal();
+  });
+</script>
+
 
 </body>
 </html>
