@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon Safety Communication Board</title>
+  <style>
+    :root {
+      --amazon-green: #008a05;
+      --amazon-dark: #0f1a1a;
+      --tile-bg: #f4fff4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(180deg, #0f1a1a, #003b1f);
+      color: #ffffff;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      background: #000000;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 4px solid var(--amazon-green);
+    }
+
+    header h1 {
+      color: var(--amazon-green);
+      font-size: 36px;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 30px;
+      height: calc(100vh - 100px);
+    }
+
+    .tile {
+      background: var(--tile-bg);
+      color: #003b1f;
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .tile:hover {
+      transform: scale(1.04);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .tile h2 {
+      font-size: 28px;
+      margin-top: 15px;
+    }
+
+    .tile span {
+      font-size: 60px;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      color: #000000;
+      width: 90%;
+      height: 90%;
+      border-radius: 20px;
+      padding: 30px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      color: var(--amazon-green);
+      margin-bottom: 20px;
+      font-size: 32px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--amazon-green);
+      color: #ffffff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .close-btn:hover {
+      background: #006b03;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .content-card {
+      background: #f4fff4;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .content-card img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .content-card p {
+      font-size: 18px;
+    }
+
+    .fullscreen-hint {
+      position: fixed;
+      bottom: 10px;
+      right: 20px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Amazon Safety Communication Board</h1>
+  </header>
+
+  <div class="container">
+    <div class="tile" onclick="openModal('leadership')">
+      <span>👔</span>
+      <h2>Leadership Commitment</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('evacuation')">
+      <span>🗺️</span>
+      <h2>Emergency Evacuation Map</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('bestpractices')">
+      <span>⭐</span>
+      <h2>Best Practices / PMV</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('education')">
+      <span>📚</span>
+      <h2>Safety Awareness / Education</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('committee')">
+      <span>👥</span>
+      <h2>Associate Safety Committee</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('fiveStar')">
+      <span>🏅</span>
+      <h2>5 Star Stance</h2>
+    </div>
+
+    <div class="tile" onclick="openModal('other')">
+      <span>ℹ️</span>
+      <h2>Other Information</h2>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-content" id="modalContent">
+      <button class="close-btn" onclick="closeModal()">✕ Close</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="fullscreen-hint">Tip: Press F11 for Fullscreen Kiosk Mode</div>
+
+  <script>
+    const content = {
+      leadership: `
+        <h2>Leadership Commitment</h2>
+        <div class="content-grid">
+          <div class="content-card">
+            <img src="assets/leadership1.jpg" alt="Leader">
+            <p>Site Leadership Commitment Statement</p>
+          </div>
+          <div class="content-card">
+            <img src="assets/leadership2.jpg" alt="Leader">
+            <p>Safety Policy & Vision</p>
+          </div>
+        </div>
+      `,
+      evacuation: `
+        <h2>Emergency Evacuation Map</h2>
+        <div class="content-card">
+          <img src="assets/evacuation-map.jpg" alt="Evacuation Map">
+          <p>Follow highlighted routes during emergencies.</p>
+        </div>
+      `,
+      bestpractices: `
+        <h2>Best Practices / PMV</h2>
+        <div class="content-grid">
+          <div class="content-card"><p>Proper Lifting Techniques</p></div>
+          <div class="content-card"><p>Heat Stress Prevention</p></div>
+          <div class="content-card"><p>Ergonomic Best Practices</p></div>
+        </div>
+      `,
+      education: `
+        <h2>Safety Awareness / Education</h2>
+        <div class="content-grid">
+          <div class="content-card"><p>Weekly Safety Topics</p></div>
+          <div class="content-card"><p>Training Videos</p></div>
+          <div class="content-card"><p>Safety Campaigns</p></div>
+        </div>
+      `,
+      committee: `
+        <h2>Associate Safety Committee</h2>
+        <div class="content-grid">
+          <div class="content-card">
+            <img src="assets/associate1.jpg" alt="Associate">
+            <p>Committee Member</p>
+          </div>
+          <div class="content-card">
+            <img src="assets/associate2.jpg" alt="Associate">
+            <p>Committee Member</p>
+          </div>
+        </div>
+      `,
+      fiveStar: `
+        <h2>5 Star Stance</h2>
+        <div class="content-grid">
+          <div class="content-card"><p>Proper Posture</p></div>
+          <div class="content-card"><p>Safe Lifting Stance</p></div>
+          <div class="content-card"><p>Awareness & Positioning</p></div>
+        </div>
+      `,
+      other: `
+        <h2>Other Information</h2>
+        <div class="content-grid">
+          <div class="content-card"><p>Zone Owners</p></div>
+          <div class="content-card"><p>Emergency Contacts</p></div>
+          <div class="content-card"><p>OSHA Information</p></div>
+        </div>
+      `
+    };
+
+    function openModal(section) {
+      document.getElementById('modalBody').innerHTML = content[section];
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Close modal if clicking outside content
+    document.getElementById('modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
+
+</body>
+</html>
