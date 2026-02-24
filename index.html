@@ -1,301 +1,304 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amazon Safety Communication Board</title>
-  <style>
-    :root {
-      --amazon-green: #008a05;
-      --amazon-dark: #0f1a1a;
-      --tile-bg: #f4fff4;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safety Communication Board</title>
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
+:root{
+--amazon-green:#008a05;
+--tile-bg:#f4fff4;
+}
 
-    body {
-      background: linear-gradient(180deg, #0f1a1a, #003b1f);
-      color: #ffffff;
-      height: 100vh;
-      overflow: hidden;
-    }
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial;}
 
-    header {
-      background: #000000;
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 4px solid var(--amazon-green);
-    }
+body{
+background:linear-gradient(180deg,#0f1a1a,#003b1f);
+color:white;
+height:100vh;
+overflow:hidden;
+}
 
-    header h1 {
-      color: var(--amazon-green);
-      font-size: 36px;
-      letter-spacing: 1px;
-    }
+header{
+background:black;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:4px solid var(--amazon-green);
+}
 
-    .container {
-      padding: 40px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 30px;
-      height: calc(100vh - 100px);
-    }
+header h1{color:var(--amazon-green);font-size:32px}
 
-    .tile {
-      background: var(--tile-bg);
-      color: #003b1f;
-      border-radius: 20px;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      text-align: center;
-    }
+.container{
+padding:40px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+height:calc(100vh - 100px);
+}
 
-    .tile:hover {
-      transform: scale(1.04);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-    }
+.tile{
+background:var(--tile-bg);
+color:#003b1f;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+transition:.2s;
+box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
 
-    .tile h2 {
-      font-size: 28px;
-      margin-top: 15px;
-    }
+.tile:hover{transform:scale(1.05)}
 
-    .tile span {
-      font-size: 60px;
-    }
+.tile span{font-size:60px}
+.tile h2{margin-top:15px;font-size:26px}
 
-    /* MODAL */
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:999;
+}
 
-    .modal-content {
-      background: #ffffff;
-      color: #000000;
-      width: 90%;
-      height: 90%;
-      border-radius: 20px;
-      padding: 30px;
-      overflow-y: auto;
-      position: relative;
-    }
+.modal-content{
+background:white;
+color:black;
+width:90%;
+height:90%;
+border-radius:20px;
+padding:30px;
+overflow:auto;
+position:relative;
+}
 
-    .modal-content h2 {
-      color: var(--amazon-green);
-      margin-bottom: 20px;
-      font-size: 32px;
-    }
+.close-btn{
+position:absolute;
+top:20px;
+right:20px;
+background:var(--amazon-green);
+color:white;
+border:none;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+font-size:18px;
+}
 
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: var(--amazon-green);
-      color: #ffffff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-size: 20px;
-      cursor: pointer;
-    }
+.subtabs{
+display:flex;
+gap:15px;
+margin-bottom:20px;
+}
 
-    .close-btn:hover {
-      background: #006b03;
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .content-card {
-      background: #f4fff4;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .content-card img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .content-card p {
-      font-size: 18px;
-    }
-
-    .fullscreen-hint {
-      position: fixed;
-      bottom: 10px;
-      right: 20px;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-    .subtabs{display:flex;gap:15px;margin-bottom:20px;} .subtabs button{background:var(--amazon-green);color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:18px;cursor:pointer;} .subtabs button:hover{background:#006b03;} </style>
+.subtabs button{
+background:var(--amazon-green);
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+font-size:18px;
+cursor:pointer;
+}
+</style>
 </head>
 <body>
 
-  <header>
-    <h1>Amazon Safety Communication Kiosk RSW5 & LAL4</h1>
-  </header>
+<header>
+<h1>Safety Communication Kiosk</h1>
 
-  <div class="container">
-    <div class="tile" onclick="openModal('leadership')">
-      <span>👔</span>
-      <h2>Leadership Commitment</h2>
-    </div>
+<select onchange="setLanguage(this.value)" style="font-size:18px;padding:8px;border-radius:8px;">
+<option value="en">English</option>
+<option value="es">Español</option>
+<option value="ht">Kreyòl</option>
+</select>
+</header>
 
-    <div class="tile" onclick="openModal('evacuation')">
-      <span>🗺️</span>
-      <h2>Emergency Evacuation Map</h2>
-    </div>
+<div class="container">
 
-    <div class="tile" onclick="openModal('bestpractices')">
-      <span>⭐</span>
-      <h2>Best Practices / PMV</h2>
-    </div>
+<div class="tile" onclick="openModal('leadership')">
+<span>👔</span>
+<h2 data-key="leadership">Leadership Commitment</h2>
+</div>
 
-    <div class="tile" onclick="openModal('education')">
-      <span>📚</span>
-      <h2>Safety Awareness / Education</h2>
-    </div>
+<div class="tile" onclick="openModal('evacuation')">
+<span>🗺️</span>
+<h2 data-key="evacuation">Emergency Evacuation Map</h2>
+</div>
 
-    <div class="tile" onclick="openModal('committee')">
-      <span>👥</span>
-      <h2>Associate Safety Committee</h2>
-    </div>
+<div class="tile" onclick="openModal('best')">
+<span>⭐</span>
+<h2 data-key="best">Best Practices</h2>
+</div>
 
-    <div class="tile" onclick="openModal('fiveStar')">
-      <span>🏅</span>
-      <h2>5 Star Stance</h2>
-    </div>
+<div class="tile" onclick="openModal('education')">
+<span>📚</span>
+<h2 data-key="education">Safety Education</h2>
+</div>
 
-    <div class="tile" onclick="openModal('chemical')">
-      <h2>Chemical Safety Information</h2>
-    </div>
+<div class="tile" onclick="openModal('committee')">
+<span>👥</span>
+<h2 data-key="committee">Safety Committee</h2>
+</div>
 
-     <div class="tile" onclick="openModal('firstAid')">
-      <h2>First Aid and CPR</h2>
-    </div>
+<div class="tile" onclick="openModal('five')">
+<span>🏅</span>
+<h2 data-key="five">5 Star Stance</h2>
+</div>
 
-    <div class="tile" onclick="openModal('other')">
-      <span>ℹ️</span>
-      <h2>Other Information</h2>
-    </div>
-  </div>
+<div class="tile" onclick="openModal('chemical')">
+<h2 data-key="chemical">Chemical Safety</h2>
+</div>
 
-  <!-- MODAL -->
+<div class="tile" onclick="openModal('first')">
+<h2 data-key="first">First Aid / CPR</h2>
+</div>
 
-  <div class="modal" id="modal">
-    <div class="modal-content" id="modalContent">
-      <button class="close-btn" onclick="closeModal()">✕ Close</button>
-      <div id="modalBody"></div>
-    </div>
-  </div>
+<div class="tile" onclick="openModal('other')">
+<span>ℹ️</span>
+<h2 data-key="other">Other Info</h2>
+</div>
 
-  <div class="fullscreen-hint">Tip: Press F11 for Fullscreen Kiosk Mode</div>
+</div>
 
- <script>
-  function openModal(section) {
-    const modal = document.getElementById("modal");
-    const body = document.getElementById("modalBody");
+<div class="modal" id="modal">
+<div class="modal-content">
+<button class="close-btn" onclick="closeModal()">Close</button>
+<div id="modalBody"></div>
+</div>
+</div>
 
-    const content = {
-      leadership: `
-        <h2>Leadership Commitment</h2>
-        <div class="subtabs">
-          <button onclick="showSubTab('leader1')">Site Leader</button>
-          <button onclick="showSubTab('leader2')">Safety Vision</button>
-        </div>
-        <div id="subtab-content">
-          <img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">
-        </div>
-      `,
-      evacuation: `
-        <h2>Emergency Evacuation Map</h2>
-        <div class="subtabs">
-          <button onclick="showSubTab('map1')">Main Floor</button>
-          <button onclick="showSubTab('map2')">Mezzanine</button>
-        </div>
-        <div id="subtab-content">
-          <img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">
-        </div>
-      `,
-      bestpractices: `<h2>Best Practices</h2><p>Content coming soon</p>`,
-      education: `<h2>Safety Education</h2><p>Content coming soon</p>`,
-      committee: `
-<h2>Associate Safety Committee</h2>
+<script>
+let currentLang="en";
+
+const translations={
+en:{
+leadership:"Leadership Commitment",
+evacuation:"Emergency Evacuation Map",
+best:"Best Practices",
+education:"Safety Education",
+committee:"Safety Committee",
+five:"5 Star Stance",
+chemical:"Chemical Safety",
+first:"First Aid / CPR",
+other:"Other Info"
+},
+es:{
+leadership:"Compromiso de Liderazgo",
+evacuation:"Mapa de Evacuación",
+best:"Mejores Prácticas",
+education:"Educación de Seguridad",
+committee:"Comité de Seguridad",
+five:"Postura 5 Estrellas",
+chemical:"Seguridad Química",
+first:"Primeros Auxilios / RCP",
+other:"Otra Información"
+},
+ht:{
+leadership:"Angajman Lidèchip",
+evacuation:"Kat Evakyasyon",
+best:"Pi Bon Pratik",
+education:"Edikasyon Sekirite",
+committee:"Komite Sekirite",
+five:"Pozisyon 5 Zetwal",
+chemical:"Sekirite Chimik",
+first:"Premye Swen / CPR",
+other:"Lòt Enfòmasyon"
+}
+};
+
+function setLanguage(lang){
+currentLang=lang;
+document.querySelectorAll("[data-key]").forEach(el=>{
+el.innerText=translations[lang][el.dataset.key];
+});
+}
+
+function openModal(section){
+const body=document.getElementById("modalBody");
+
+const content={
+leadership:`
+<h2>Leadership</h2>
 <div class="subtabs">
-  <button onclick="showSubTab('c1')">Team 1</button>
-  <button onclick="showSubTab('c2')">Team 2</button>
-  <button onclick="showSubTab('c3')">Team 3</button>
+<button onclick="showSubTab('leader1')">Leader</button>
+<button onclick="showSubTab('leader2')">Vision</button>
 </div>
 <div id="subtab-content">
-  <img src="assets/SafetyTeam.png" style="width:100%;border-radius:15px;">
+<img src="assets/leadership1.jpg" style="width:100%">
+</div>`,
+
+evacuation:`
+<h2>Evacuation Maps</h2>
+<div class="subtabs">
+<button onclick="showSubTab('map1')">Floor 1</button>
+<button onclick="showSubTab('map2')">Floor 2</button>
 </div>
-`,
-      fiveStar: `<h2>5 Star Stance</h2><p>Content coming soon</p>`,
-      other: `<h2>Other Information</h2><p>Content coming soon</p>`
-    };
+<div id="subtab-content">
+<img src="assets/evacuation-map.jpg" style="width:100%">
+</div>`,
 
-    body.innerHTML = content[section];
-    modal.style.display = "flex";
-  }
+best:`<h2>Best Practices</h2><p>Add best practice images or info here.</p>`,
 
-  function closeModal() {
-    document.getElementById("modal").style.display = "none";
-  }
+education:`<h2>Training</h2><p>Add training slides or videos.</p>`,
 
-  function showSubTab(tab) {
-    const container = document.getElementById("subtab-content");
+committee:`
+<h2>Committee</h2>
+<div class="subtabs">
+<button onclick="showSubTab('c1')">Team 1</button>
+<button onclick="showSubTab('c2')">Team 2</button>
+<button onclick="showSubTab('c3')">Team 3</button>
+</div>
+<div id="subtab-content">
+<img src="assets/committee1.png" style="width:100%">
+</div>`,
 
-    const map = {
-  leader1: '<img src="assets/leadership1.jpg" style="width:100%;border-radius:15px;">',
-  leader2: '<img src="assets/leadership2.jpg" style="width:100%;border-radius:15px;">',
-  map1: '<img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">',
-  map2: '<img src="assets/evacuation-map2.jpg" style="width:100%;border-radius:15px;">',
-  c1: '<img src="assets/committee1.png" style="width:100%;border-radius:15px;">',
-  c2: '<img src="assets/committee2.png" style="width:100%;border-radius:15px;">',
-  c3: '<img src="assets/committee3.png" style="width:100%;border-radius:15px;">'
+five:`<h2>5 Star Stance</h2><p>Add stance visuals.</p>`,
+
+chemical:`<h2>Chemical Safety</h2><p>SDS sheets or procedures.</p>`,
+
+first:`<h2>First Aid / CPR</h2><p>Emergency steps or training slides.</p>`,
+
+other:`<h2>Other Info</h2><p>Contacts, alerts, etc.</p>`
 };
-      
 
-    container.innerHTML = map[tab];
-  }
+body.innerHTML=content[section];
+document.getElementById("modal").style.display="flex";
+}
 
-  // Close when clicking outside modal
-  document.addEventListener("click", function(e) {
-    const modal = document.getElementById("modal");
-    if (e.target === modal) closeModal();
-  });
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function showSubTab(tab){
+const container=document.getElementById("subtab-content");
+
+const map={
+leader1:'<img src="assets/leadership1.jpg" style="width:100%">',
+leader2:'<img src="assets/leadership2.jpg" style="width:100%">',
+map1:'<img src="assets/evacuation-map.jpg" style="width:100%">',
+map2:'<img src="assets/evacuation-map2.jpg" style="width:100%">',
+c1:'<img src="assets/committee1.png" style="width:100%">',
+c2:'<img src="assets/committee2.png" style="width:100%">',
+c3:'<img src="assets/committee3.png" style="width:100%">'
+};
+
+container.innerHTML=map[tab];
+}
+
+document.addEventListener("click",e=>{
+if(e.target.id==="modal") closeModal();
+});
 </script>
-
 
 </body>
 </html>
