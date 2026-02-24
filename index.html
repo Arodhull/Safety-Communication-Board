@@ -249,7 +249,17 @@
       `,
       bestpractices: `<h2>Best Practices</h2><p>Content coming soon</p>`,
       education: `<h2>Safety Education</h2><p>Content coming soon</p>`,
-      committee: `<h2>Associate Safety Committee</h2><p>Content coming soon</p>`,
+      committee: `
+<h2>Associate Safety Committee</h2>
+<div class="subtabs">
+  <button onclick="showSubTab('c1')">Team 1</button>
+  <button onclick="showSubTab('c2')">Team 2</button>
+  <button onclick="showSubTab('c3')">Team 3</button>
+</div>
+<div id="subtab-content">
+  <img src="assets/committee1.png" style="width:100%;border-radius:15px;">
+</div>
+`,
       fiveStar: `<h2>5 Star Stance</h2><p>Content coming soon</p>`,
       other: `<h2>Other Information</h2><p>Content coming soon</p>`
     };
@@ -270,6 +280,9 @@
       leader2: '<img src="assets/leadership2.jpg" style="width:100%;border-radius:15px;">',
       map1: '<img src="assets/evacuation-map.jpg" style="width:100%;border-radius:15px;">',
       map2: '<img src="assets/evacuation-map2.jpg" style="width:100%;border-radius:15px;">'
+      c1: '<img src="assets/committee1.png" style="width:100%;border-radius:15px;">',
+c2: '<img src="assets/committee2.png" style="width:100%;border-radius:15px;">',
+c3: '<img src="assets/committee3.png" style="width:100%;border-radius:15px;">',
     };
 
     container.innerHTML = map[tab];
